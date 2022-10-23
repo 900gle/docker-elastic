@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/docker-elk.iml" filepath="$PROJECT_DIR$/.idea/docker-elk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/docker-plugin.iml" filepath="$PROJECT_DIR$/.idea/docker-plugin.iml" />
     </modules>
   </component>
 </project>

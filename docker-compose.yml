@@ -2,6 +2,7 @@ version: '3.2'
 
 services:
   elasticsearch:
+    container_name: test_es
     build:
       context: elasticsearch/
       args:
@@ -13,7 +14,7 @@ services:
         read_only: true
       - type: volume
         source: elasticsearch
-        target: /usr/share/elasticsearch/data
+        target: /usr/share/elasticsearch/log
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -26,33 +27,35 @@ services:
     networks:
       - elk
 
-#  logstash:
-#    build:
-#      context: logstash/
-#      args:
-#        ELK_VERSION: $ELK_VERSION
-#    volumes:
-#      - type: bind
-#        source: ./logstash/config/logstash.yml
-#        target: /usr/share/logstash/config/logstash.yml
-#        read_only: true
-#      - type: bind
-#        source: ./logstash/pipeline
-#        target: /usr/share/logstash/pipeline
-#        read_only: true
-#    ports:
-#      - "5044:5044"
-#      - "5000:5000/tcp"
-#      - "5000:5000/udp"
-#      - "9600:9600"
-#    environment:
-#      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
-#    networks:
-#      - elk
-#    depends_on:
-#      - elasticsearch
+  logstash:
+    container_name: test_logstash
+    build:
+      context: logstash/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    volumes:
+      - type: bind
+        source: ./logstash/config/logstash.yml
+        target: /usr/share/logstash/config/logstash.yml
+        read_only: true
+      - type: bind
+        source: ./logstash/pipeline
+        target: /usr/share/logstash/pipeline
+        read_only: true
+    ports:
+      - "5044:5044"
+      - "6000:6000/tcp"
+      - "6000:6000/udp"
+      - "9600:9600"
+    environment:
+      LS_JAVA_OPTS: "-Xmx512m -Xms512m"
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
 
   kibana:
+    container_name: test_kibana
     build:
       context: kibana/
       args:
